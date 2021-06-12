@@ -1,0 +1,73 @@
+<!HTML Pulse oximeter website>
+<!Author:	Joseph Oduor>
+<!Date:		12/06/2021>
+<!Link:		https:blalala>
+
+<html>
+<head>
+	<!Icon for the webpage>
+	<link rel="shortcut icon" href="..\Oximeter HTML\rateicon.png" type="image/x-icon" />
+
+	<!Refresh values every one second>
+	<meta http-equiv="refresh" content="1">
+
+	<title>Pulse Oximeter</title>
+
+	<style>
+
+		body{
+		margin: 0px;
+		}
+
+		h1{
+		font-family: arial;
+		font-size: 100%;
+		}
+		iframe{
+		width: 900px;
+		height: 500px;
+		}
+		h2{
+		font-family: arial;
+		font-size: 100%;
+		}
+
+		div.top{
+		background-color: rgba(0, 128, 0, 0.83);
+		height: 200px;
+		width: 100%;
+		}
+	</style>
+
+
+</head>
+
+<body>
+	<div class="top">
+		<img src="..\Oximeter HTML\rateicon2.png" alt="PulseImage"  height="200" width="600" >
+
+	</div>
+
+	<h1>Heart Rate (BPM)</h1>
+
+	<!Extract Heart Rate value from Blynk server>
+	<iframe src="http://blynk-cloud.com/eD64Lmt1VkBY__DdWGA0svSxzvSaFFji/get/V1" frameborder="0" scrolling="yes"                           
+                                    style="overflow: hidden; height: 100%; 
+                                                width: 49%; float: left; " height="100%" width="49%"
+                                   align="left">
+                                  </iframe>  
+
+	<h2>Blood Oxygen saturation (SpO2%)</h2>
+
+	<!Extract SpO2 value from Blynk server>
+	<iframe src="http://blynk-cloud.com/eD64Lmt1VkBY__DdWGA0svSxzvSaFFji/get/V2" frameborder="0" scrolling="yes"                           
+                                    style="overflow: hidden; height: 100%; 
+                                                width: 49%; float: left; " height="100%" width="49%"
+                                   align="left">
+                                  </iframe>
+
+
+
+
+</body>
+</html>
