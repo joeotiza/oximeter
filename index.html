@@ -1,69 +1,61 @@
-<!File:		index.html>
+<!File:		oximeterHTML.html>
 <!Author:	Joseph Oduor>
 <!Date:		12/06/2021>
 <!Brief:	Pulse oximeter website>
 
 <html>
 <head>
-	<!Icon for the webpage>
-	<link rel="shortcut icon" href="..\Oximeter HTML\rateicon.png" type="image/x-icon" />
+  <!Icon for the webpage>
+  <link rel="shortcut icon" href="..\Oximeter HTML\rateicon.png" type="image/x-icon" />
 
-	<!Refresh values every one second>
-	<meta http-equiv="refresh" content="1">
-
-	<title>Pulse Oximeter</title>
-
-	<style>
-
-		body{
-		margin: 0px;
-		}
-
-		h1{
-		font-family: arial;
-		font-size: 100%;
-		}
-		iframe{
-		width: 900px;
-		height: 500px;
-		}
-		h2{
-		font-family: arial;
-		font-size: 100%;
-		}
-
-		div.top{
-		background-color: rgba(0, 128, 0, 0.83);
-		height: 200px;
-		width: 100%;
-		}
-	</style>
-
+  <title>Pulse Oximeter</title>
 </head>
+<body>  
+  <script type="text/JavaScript">
 
-<body>
-	<div class="top">
-		<img src="..\Oximeter HTML\rateicon2.png" alt="PulseImage"  height="200" width="600" >
+  //Get a value from a URL
+  function httpGet(theUrl)
+  {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    var sec = xmlHttp.responseText;
 
-	</div>
+    //exclude opening and closing quotations
+    if (sec [3]=='"')
+      var stringValue=sec[2];
+    else if (sec [4]=='"')
+      var stringValue=sec[2]+sec[3]
+    else if(sec[5]=='"')
+      var stringValue=sec[2]+sec[3]+sec[5]
+    var value=parseInt(stringValue)
+    return value;
+  }
 
-	<h1>Heart Rate (BPM)</h1>
+  // the timer reference
+  let timer;
 
-	<!Extract Heart Rate value from Blynk server>
-	<iframe src="http://blynk-cloud.com/eD64Lmt1VkBY__DdWGA0svSxzvSaFFji/get/V1" frameborder="0" scrolling="yes"                           
-                                    style="overflow: hidden; height: 100%; 
-                                                width: 49%; float: left; " height="100%" width="49%"
-                                   align="left">
-                                  </iframe>  
+  // Don't need a for loop in setInterval, the function itself is aleady called in iterations.
+  function type()
+  {
+    var dt=new Date();
+    var myTime=dt.toLocaleTimeString();
+    var BPM =httpGet("http://blynk-cloud.com/eD64Lmt1VkBY__DdWGA0svSxzvSaFFji/get/V1").toString();
+    var SPO2=httpGet("http://blynk-cloud.com/eD64Lmt1VkBY__DdWGA0svSxzvSaFFji/get/V2").toString();
 
-	<h2>Blood Oxygen saturation (SpO2%)</h2>
+    // print time and oximeter readings in table format
+    htmlString='<table style="width:50%"><tr><td>'+myTime;
+    htmlString+='</td><td>'+BPM+' beats per minute</td><td>';
+    htmlString+=SPO2+'% SpO2</td></tr></table>';
 
-	<!Extract SpO2 value from Blynk server>
-	<iframe src="http://blynk-cloud.com/eD64Lmt1VkBY__DdWGA0svSxzvSaFFji/get/V2" frameborder="0" scrolling="yes"                           
-                                    style="overflow: hidden; height: 100%; 
-                                                width: 49%; float: left; " height="100%" width="49%"
-                                   align="left">
-                                  </iframe>
+    //Don't print zero values for when finger is out
+    if (parseInt(BPM)!=0 && parseInt(SPO2)!=0)
+      document.write(htmlString);
+  }
 
+  // pass in function, instead of calling it
+  timer = setInterval(type, 1000);
+
+  </script>
 </body>
 </html>
